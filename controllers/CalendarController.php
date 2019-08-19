@@ -16,7 +16,7 @@ class CalendarController extends BaseController
     public function actions()
     {
         return [
-            'today' => ['class' => DayInfoAction::class, 'name' => 'Важный день!'],
+            'today' => ['class' => DayInfoAction::class, 'name' => 'Задачи на день'],
         ];
     }
 }

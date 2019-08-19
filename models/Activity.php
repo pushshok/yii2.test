@@ -35,7 +35,7 @@ class Activity extends Model
     public $emailRepeat;
 
     public $file;
-
+    public $files;
     public function rules()
     {
         return [
@@ -46,7 +46,8 @@ class Activity extends Model
 //            ['inn','string','length'=>10],
             ['dateStart', 'date', 'format' => 'php:Y-m-d'],
             ['dateStart', 'string'],
-            ['file','file','extensions' => ['jpg','png']],
+            ['file','file','extensions' => ['jpg','png'], 'maxFiles' => 10],
+            ['files', 'string'],
             ['repeatedType','in','range' => array_keys(self::REPEATED_TYPE)],
             ['dateEnd', 'string'],
             ['email','email'],
@@ -73,12 +74,14 @@ class Activity extends Model
     public function attributeLabels()
     {
         return [
+            'author'=>'Автор записи',
             'title'=>'Название события',
             'description'=>'Описание',
             'duration'=>'Длительность',
             'dateStart'=>'Дата начала',
             'dateEnd'=>'Дата окончания',
             'isRepeated'=>'Дата повтора',
+            'repeatedType'=>'Событие повторяется',
             'isBlocked'=>'Занимает весь день'
         ];
     }

@@ -17,23 +17,32 @@ use yii\web\UploadedFile;
 class ActivityComponent extends BaseComponent
 {
     public $classModel;
+    public $item;
 
     public function getModel(){
         return new $this->classModel();
     }
 
     public function createActivity(Activity &$activity):bool {
-        $activity->file = UploadedFile::getInstance($activity, 'file');
+
+        $item = UploadedFile::getInstances($activity, 'file');
 
         if (!$activity->validate()) {
             return false;
         }
 
-        if($activity->file){
-            $filename=$this->saveUploadedFile($activity->file);
-            $activity->file=$filename;
-        }
 
+        //Мультизагрузка не работает тут, не понимаю почему не происходит перебор массива
+        $i=0;
+        foreach ($item as $activity->file) {
+
+            // Попытался реализовать перебор по числам, ничего не вышло
+            if($activity->file){
+                $filename=$this->saveUploadedFile($activity->file);
+                $activity->files=$filename;
+            }
+            $i++;
+        }
         return true;
     }
 
@@ -57,4 +66,5 @@ class ActivityComponent extends BaseComponent
     {
         return time().'.'.$uploadedFile->extension;
     }
+
 }
