@@ -41,6 +41,7 @@ class Activity extends Model
         return [
             ['title', 'trim'],
             [['title'], 'required'],
+            ['author', 'string'],
             ['dateStart','required','message' => 'Дата старта события обязательно'],
             ['description', 'string', 'min' => 5, 'max' => 150],
 //            ['inn','string','length'=>10],
