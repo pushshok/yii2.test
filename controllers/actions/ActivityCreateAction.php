@@ -4,23 +4,27 @@
  * User: anysam
  * Date: 09.08.19
  * Time: 19:04
+ * @var $day \app\models\Day
  */
 
 namespace app\controllers\actions;
 
 use app\base\BaseAction;
 use app\components\ActivityComponent;
+use app\controllers\CalendarController;
 use app\models\Activity;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use app\models\Day;
 
 class ActivityCreateAction extends BaseAction {
     public $name;
+    public $event;
 
     public function run() {
 
-        //$model = new Activity();
         $activityComponent = \Yii::createObject(['class'=>ActivityComponent::class, 'classModel' => Activity::class]);
 
         //$model = \Yii::$app->activity->getModel();
@@ -34,7 +38,22 @@ class ActivityCreateAction extends BaseAction {
             }
 
             if(\Yii::$app->activity->createActivity($model)) {
-                return $this->controller->render('view', ['model'=>$model]);
+
+                //Данные для наполнения модели положил здесь, наверное нужно их разместить где-то в другом месте
+                $day = new Day();
+                $data = date('y-m-d');
+                $dayNumber = date("D");
+                $dat = DayInfoAction::isWeekend(strtotime($dayNumber));
+                $this->event .= $model->title."\n";
+                $day->setAttributes(['today' => $data, 'weekend' => $dat, 'event' => $this->event]);
+
+                return $this->controller->render('day', ['name' => $this->name, 'day' => $day, 'model' => $model]);
+
+                //return Yii::$app->response->redirect(['DayInfoAction', 'model' => $model]);
+                //return Html::a('Link', [
+                //    'calendar/day'.$model->title
+                //]);
+                //return $this->controller->render('view', ['model'=>$model]);
             } else {
                 print_r($model->getErrors());
                 exit;
@@ -46,16 +65,4 @@ class ActivityCreateAction extends BaseAction {
         }
         return $this->controller->render('create', ['name' => $this->name, 'model'=>$model]);
     }
-
-//        $arr=['one'=>'val1','two'=>['three'=>'value2']];
-//        $db=[['id'=>2,'name'=>'Klaus','lastName'=>'Branbie'],['id'=>4,'name'=>'Родион','lastName'=>'Руденко']];
-//        $value=ArrayHelper::getValue($arr,'two.three');
-//        print_r($value);
-//        $arr=ArrayHelper::map($db,'id',function ($record){
-//            return ArrayHelper::getValue($record,'lastName').' '.ArrayHelper::getValue($record,'name');
-//        });
-//
-//        print_r($arr);
-//        exit;
-
 }

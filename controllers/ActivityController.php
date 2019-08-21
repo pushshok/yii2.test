@@ -11,6 +11,7 @@ namespace app\controllers;
 use app\controllers\actions\ActivityCreateAction;
 //use yii\web\Controller;
 use app\base\BaseController;
+use app\controllers\actions\DayInfoAction;
 
 
 class ActivityController extends BaseController {
