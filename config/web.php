@@ -25,6 +25,9 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'OQWt_Kcf-99Rl1Tq8Vge80WxCa7RB4Bh',
         ],
+        'dao'=>[
+            'class'=>\app\components\DaoComponent::class
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
