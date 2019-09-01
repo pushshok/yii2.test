@@ -9,13 +9,12 @@
 
 /* @var $this \yii\web\View */
 /* @var $users array */
-?>
+
+use app\widgets\UserViewerWidget\UserViewerWidget; ?>
 
 <div class="row">
     <div class="col-md-6">
-        <pre>
-            <? print_r($users); ?>
-        </pre>
+        <?php echo UserViewerWidget::widget(['users' => $users]); ?>
     </div>
     <div class="col-md-6">
         <pre>
@@ -28,9 +27,7 @@
         </pre>
     </div>
     <div class="col-md-6">
-        <pre>
-            <?=$count; ?>
-        </pre>
+            <?php echo UserViewerWidget::widget(['users' => $count]); ?>
     </div>
     <div class="col-md-6">
         <pre>
