@@ -9,24 +9,52 @@ $session = Yii::$app->session;
  */
 
 
+use kartik\datetime\DateTimePicker;
+use app\widgets\HelloWidget;
+
 ?>
 
 <h2><?=$name ?>:</h2>
-<strong><?=Yii::getAlias('@webroot');?></strong>
-<p class="lead">Создание активности</p>
 
 <div class="row">
     <div class="col-md-6">
-
         <?php $form=\yii\bootstrap\ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
         <?=$form->field($model, 'author')->textInput(); ?>
         <?=$form->field($model, 'title')->textInput(['id' => 'title' ]); ?>
         <?=$form->field($model, 'description')->textarea(); ?>
-        <?=$form->field($model, 'duration')->textInput(); ?>
-        <?=$form->field($model, 'dateStart')->input('date'); ?>
-        <?=$form->field($model, 'dateEnd')->input('date'); ?>
-    </div>
 
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+            <?= $form->field($model, 'dateStart')->widget(DateTimePicker::class, [
+                'convertFormat' => true,
+                'pluginOptions' => [
+                    'format' => 'dd.MM.yyyy hh:i',
+                    'autoclose'=>true,
+                    'weekStart'=>1, //неделя начинается с понедельника
+                    'startDate' => '01.08.2019 00:00', //самая ранняя возможная дата
+                    'todayBtn'=>true, //снизу кнопка "сегодня"
+                    'todayHighlight' => true
+                ]
+            ]) ?>
+            <?=$form->field($model, 'duration')->textInput(); ?>
+    </div>
+    <div class="col-md-6">
+            <?= $form->field($model, 'dateEnd')->widget(DateTimePicker::class, [
+                'convertFormat' => true,
+                'pluginOptions' => [
+                    'format' => 'dd.MM.yyyy hh:i',
+                    'autoclose'=>true,
+                    'weekStart'=>1, //неделя начинается с понедельника
+                    'startDate' => '01.08.2019 00:00', //самая ранняя возможная дата
+                    'todayBtn'=>true, //снизу кнопка "сегодня"
+                    'todayHighlight' => true
+                ]
+            ]) ?>
+    </div>
+</div>
+<div class="row">
         <div class="col-md-4">
             <?= $form->field($model, 'isRepeated')->checkbox() ?>
         </div>
@@ -55,5 +83,5 @@ $session = Yii::$app->session;
             <button class="btn btn-default" type="submit">Создать</button>
         </div>
         <?php $form=\yii\bootstrap\ActiveForm::end(); ?>
-
 </div>
+<pre><?= HelloWidget::widget(['message' => Yii::getAlias('@webroot')]) ?></pre>
