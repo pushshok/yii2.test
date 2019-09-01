@@ -1,8 +1,9 @@
 <?php
 
+
 $params = require __DIR__ . '/params.php';
-$db = !file_exists('/db_locale.php')?
-    (require __DIR__ . '/db_locale.php'):
+$db = !file_exists('/db_locale.php') ?
+    (require __DIR__ . '/db_locale.php') :
     (require __DIR__ . '/db.php');
 
 $config = [
@@ -12,7 +13,7 @@ $config = [
     'language' => 'ru-RU',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'modules' => [
         'auth' => [
@@ -20,19 +21,28 @@ $config = [
         ],
     ],
     'components' => [
-        'activity'=>['class'=>\app\components\ActivityComponent::class, 'classModel' => \app\models\Activity::class],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+        'rbac' => ['class' => app\components\RbacComponent::class],
+        'activity' => [
+            'class' => \app\components\ActivityComponent::class, 'classModel' => \app\models\Activity::class,
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'OQWt_Kcf-99Rl1Tq8Vge80WxCa7RB4Bh',
         ],
-        'dao'=>[
-            'class'=>\app\components\DaoComponent::class
+        'dao' => [
+            'class' => \app\components\DaoComponent::class
+        ],
+        'fuck' => [
+            'class' => \app\components\FuckComponent::class
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [

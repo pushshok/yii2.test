@@ -1,9 +1,13 @@
 <?php
+
+//use app\models\Activity;
+
 /**
  * Created by PhpStorm.
  * User: anysam
  * Date: 09.08.19
  * Time: 19:04
+ * @var $model Activity
  * @var $day \app\models\Day
  */
 
@@ -15,6 +19,7 @@ use app\controllers\CalendarController;
 use app\models\Activity;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\HttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use app\models\Day;
@@ -24,6 +29,10 @@ class ActivityCreateAction extends BaseAction {
     public $event;
 
     public function run() {
+
+        if(!\Yii::$app->rbac->canCreateActivity()) {
+            throw new HttpException('403', 'Forbiden!');
+        }
 
         $activityComponent = \Yii::createObject(['class'=>ActivityComponent::class, 'classModel' => Activity::class]);
 
@@ -39,29 +48,11 @@ class ActivityCreateAction extends BaseAction {
 
             if(\Yii::$app->activity->createActivity($model)) {
 
-                //Данные для наполнения модели положил здесь, наверное нужно их разместить где-то в другом месте
-                $day = new Day();
-                $data = date('y-m-d');
-                $dayNumber = date("D");
-                $dat = DayInfoAction::isWeekend(strtotime($dayNumber));
-                $this->event .= $model->title."\n";
-                $day->setAttributes(['today' => $data, 'weekend' => $dat, 'event' => $this->event]);
-
-                return $this->controller->render('day', ['name' => $this->name, 'day' => $day, 'model' => $model]);
-
-                //return Yii::$app->response->redirect(['DayInfoAction', 'model' => $model]);
-                //return Html::a('Link', [
-                //    'calendar/day'.$model->title
-                //]);
-                //return $this->controller->render('view', ['model'=>$model]);
+                return $this->controller->redirect(['activity/day', 'id' => $model->id]);
             } else {
                 print_r($model->getErrors());
                 exit;
             }
-            //$model->setAttributes(['title' => 'Sub']);
-            //$model->title = 'Set';
-            //print_r($model->getAttributes());
-            //exit;
         }
         return $this->controller->render('create', ['name' => $this->name, 'model'=>$model]);
     }

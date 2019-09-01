@@ -39,7 +39,6 @@ class UsersBase extends \yii\db\ActiveRecord
             [['createAt'], 'safe'],
             [['isDeleted'], 'integer'],
             [['login', 'name', 'email', 'pass', 'token', 'auth_key'], 'string', 'max' => 150],
-            [['email'], 'unique'],
         ];
     }
 
@@ -66,6 +65,6 @@ class UsersBase extends \yii\db\ActiveRecord
      */
     public function getActivities()
     {
-        return $this->hasMany(Activity::className(), ['user_id' => 'id']);
+        return $this->hasMany(Activity::class, ['user_id' => 'id']);
     }
 }
