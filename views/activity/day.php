@@ -9,20 +9,25 @@ $session['history'] = Yii::$app->request->referrer;
  * @var $model \app\models\Activity
  * @var $day \app\models\Day
  */
-$i = 0;
+
+/*
+<h1><?=$name; ?></h1>
+<h2>Сегодняшнее число: <?=$day->today; ?></h2>
+<h3>Выходной ли? <?=$day->weekend ?> </h3>
+<h3><?php
+if ($day->weekend != true) {
+    echo "- Рабочий день -";
+} else {
+    echo "- Выходной день -";
+}
+?></h3>
+
+*/
 ?>
 <div class="container">
     <div class="col-md-6">
-        <h1><?=$name; ?></h1>
-        <h2>Сегодняшнее число: <?=$day->today; ?></h2>
-        <h3>Выходной ли? <?=$day->weekend ?> </h3>
-        <h3><?php
-        if ($day->weekend != true) {
-            echo "- Рабочий день -";
-        } else {
-            echo "- Выходной день -";
-        }
-        ?></h3>
+
+
         <p>На сегодня назначены следующие события:</p>
         <ul>
             <?php if($model->title): ?>
@@ -51,27 +56,29 @@ $i = 0;
 
 
         </ul>
-        <? //Выводит название файла ?>
-        <?php print_r($model->files); ?>
+
         <br>
+        <h3>Фото с места событий:</h3>
         <div class="col-md-12">
             <?php if($model->files):?>
-                <?=\yii\helpers\Html::img('/images/'.$model->files,['width'=>250,'id'=>'id_'.$i])?>
+                <?php foreach ($model->files as $file): ?>
+                <?=\yii\helpers\Html::img('/images/'.$file,['width'=>250,'id'=>'id_image']); ?>
+                <br><br>
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
-
-        <br>
-
-        <? //Эта конструкция не работает, говорит, что переменная должна быть массивом ?>
-        <?php  /*$n = count($model->files); ?>
-        <?php while($model->file):?>
         <div class="col-md-12">
-            <?php if($i <= $n):?>
-                <?=\yii\helpers\Html::img('/images/'.$model->file[$i],['width'=>250,'id'=>'id_'.$i])?>
+            <?php if(($model->file) and (!$model->files)):?>
+            <?php $files = explode(', ', $model->file); ?>
+                <?php foreach ($files as $file): ?>
+                    <?=\yii\helpers\Html::img('/images/'.$file,['width'=>250,'id'=>'id_image']); ?>
+                    <br><br>
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
-            <?php $i++; ?>
-        <?php endwhile; */?>
+
+        <br><br>
+
         <i><a href="<?=$session['history']; ?>">Предыдущая страница</a></i>
     </div>
 </div>
