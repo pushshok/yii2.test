@@ -80,7 +80,7 @@ class DaoComponent extends BaseComponent
                 ->execute();
 
             $this->getDb()->createCommand()
-                ->update('users', ['email'=>'email3@email.ru'],['id'=>2])
+                ->update('users', ['email'=>'email2@email.ru'],['id'=>2])
                 ->execute();
         });
     }
