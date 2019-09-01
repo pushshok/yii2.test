@@ -1,16 +1,19 @@
 <?php
+
+//use app\models\Activity;
+
 /**
  * Created by PhpStorm.
  * User: anysam
  * Date: 09.08.19
  * Time: 23:34
+ * @var $activity Activity
  */
 
 namespace app\components;
 
-
-use app\base\BaseComponent;
 use app\models\Activity;
+use app\base\BaseComponent;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 
@@ -25,24 +28,46 @@ class ActivityComponent extends BaseComponent
 
     public function createActivity(Activity &$activity):bool {
 
-        $item = UploadedFile::getInstances($activity, 'file');
+        $items = UploadedFile::getInstances($activity, 'files');
+        //$items = UploadedFile::getInstance($activity, 'file');
+
+        $activity->user_id = \Yii::$app->user->getId();
+        if (!$activity->user_id) {
+            $activity->user_id = 1;
+        }
+
 
         if (!$activity->validate()) {
             return false;
         }
 
+        foreach ($items as $item) {
+            if ($item) {
+                $filename = $this->saveUploadedFile($item);
+                $activity->file .= $filename.', ';
+                $activity->files[] = $filename;
+            }
+        }
 
+        $activity->save();
+        //
+        /*
+        foreach ($items as $item) {
+           $item = $activity->file;
+        }
         //Мультизагрузка не работает тут, не понимаю почему не происходит перебор массива
+        /*
         $i=0;
         foreach ($item as $activity->file) {
 
             // Попытался реализовать перебор по числам, ничего не вышло
             if($activity->file){
                 $filename=$this->saveUploadedFile($activity->file);
-                $activity->files=$filename;
+                $activity->file=$filename;
             }
             $i++;
         }
+        */
         return true;
     }
 
@@ -64,7 +89,7 @@ class ActivityComponent extends BaseComponent
 
     private function genFileName(UploadedFile $uploadedFile): string
     {
-        return time().'.'.$uploadedFile->extension;
+        return time().\Yii::$app->security->generateRandomString().'.'.$uploadedFile->extension;
     }
 
 }

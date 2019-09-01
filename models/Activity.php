@@ -11,18 +11,18 @@ namespace app\models;
 use app\models\rules\StopListRules;
 use yii\base\Model;
 
-class Activity extends Model
+class Activity extends ActivityBase
 {
-    public $author;
-    public $title;
-    public $description;
-    public $duration;
-    public $dateEnd;
-    public $dateStart;
-    public $isBlocked;
+//    public $author;
+//    public $title;
+//    public $description;
+//    public $duration;
+//    public $dateEnd;
+//    public $dateStart;
+//    public $isBlocked;
 
     public $isRepeated;
-    public $repeatedType;
+//    public $repeatedType;
 
     public const REPEATED_TYPE = [
         1 => 'Каждый день',
@@ -30,11 +30,11 @@ class Activity extends Model
         3 => 'Каждую неделю'
     ];
 
-    public $useNotification;
-    public $email;
+//    public $useNotification;
+//    public $email;
     public $emailRepeat;
 
-    public $file;
+//    public $file;
     public $files;
     public function rules()
     {
@@ -48,7 +48,7 @@ class Activity extends Model
             ['dateStart', 'date', 'format' => 'php:Y-m-d'],
             ['dateStart', 'string'],
             ['file','file','extensions' => ['jpg','png'], 'maxFiles' => 10],
-            ['files', 'string'],
+            ['files', 'safe'],
             ['repeatedType','in','range' => array_keys(self::REPEATED_TYPE)],
             ['dateEnd', 'string'],
             ['email','email'],

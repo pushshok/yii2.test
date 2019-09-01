@@ -39,7 +39,8 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Создание события', 'url' => ['/activity/create']],
-            ['label' => 'Событие сегодня', 'url' => ['/calendar/today']],
+            ['label' => 'Регистрация', 'url' => ['/fuck/sign-up']],
+            ['label' => 'Авторизация', 'url' => ['/fuck/sign-in']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
