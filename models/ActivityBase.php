@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\behaviors\SetDataDuringBehavior;
 use Yii;
 
 /**
@@ -38,6 +39,9 @@ class ActivityBase extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+
+
     public function rules()
     {
         return [
